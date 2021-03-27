@@ -1,24 +1,31 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:biddee_flutter/providers/SetImageProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class NewItemScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          onPressed: () => Get.back(),
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => SetImageProvider(),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: () => Get.back(),
+          ),
+          title: Text(
+            "Create new item",
+          ),
+          backgroundColor: Theme.of(context).primaryColorDark,
+          brightness: Brightness.dark,
         ),
-        title: Text(
-          "Create new item",
-        ),
-        backgroundColor: Theme.of(context).primaryColorDark,
-        brightness: Brightness.dark,
+        body: NewItemBody(),
       ),
-      body: NewItemBody(),
     );
   }
 }
@@ -36,33 +43,42 @@ class NewItemBody extends StatelessWidget {
   }
 }
 
-class ImageSelector extends StatefulWidget {
-  @override
-  _ImageSelectorState createState() => _ImageSelectorState();
-}
-
-class _ImageSelectorState extends State<ImageSelector> {
+class ImageSelector extends StatelessWidget {
   final ImagePicker _picker = ImagePicker();
-
-  PickedFile _imageFile;
-
-  Future _pickImage() async {
-    final pickedImage = await _picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _imageFile = pickedImage;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    var setImageProvider = Provider.of<SetImageProvider>(context);
+
+    Future _pickImage() async {
+      // request permissions
+      await Permission.photos.request();
+      var permissionStatus = await Permission.photos.status;
+
+      if (permissionStatus.isGranted) {
+        // get image
+        setImageProvider.image =
+            await _picker.getImage(source: ImageSource.gallery);
+        if (setImageProvider.image != null) {
+          final imageBytes =
+              File(setImageProvider.image.path).readAsBytesSync();
+          setImageProvider.image64 = base64Encode(imageBytes);
+        }
+      } else {
+        // request permissions again
+        print("permission is not granted: request again");
+        await Permission.photos.request();
+      }
+    }
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _imageFile != null
+          setImageProvider.isPicked
               ? Image.file(
-                  File(_imageFile.path),
+                  File(setImageProvider.imagePath),
                   width: 300,
                   height: 300,
                 )
@@ -90,7 +106,9 @@ class _ImageSelectorState extends State<ImageSelector> {
               "Set Image".toUpperCase(),
               style: TextStyle(color: Colors.black),
             ),
-            onPressed: () => _pickImage(),
+            onPressed: () {
+              _pickImage();
+            },
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all<Color>(Color(0xFFf3f3f3)),

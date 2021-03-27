@@ -21,6 +21,7 @@ dependencies:
 
     # helper widgets
     image_picker: ^0.6.7+22
+    permission_handler: ^5.1.0+2
 
     cupertino_icons: ^1.0.2
 
