@@ -1,5 +1,6 @@
 import 'package:biddee_flutter/Bodies/BidBody.dart';
 import 'package:biddee_flutter/Bodies/MyItemBody.dart';
+import 'package:biddee_flutter/Bodies/ProfileBody.dart';
 import 'package:biddee_flutter/providers/MainScreenProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +9,7 @@ class MainScreen extends StatelessWidget {
   final screens = [
     BidBody(),
     MyItemBody(),
+    ProfileBody(),
   ];
 
   @override
@@ -38,21 +40,14 @@ BottomNavigationBar _bottomNavigationBar(context, mainScreenProvider) {
     },
     selectedFontSize: 14,
     unselectedFontSize: 14,
-    selectedItemColor: Colors.white60,
-    unselectedItemColor: Colors.white38,
+    selectedItemColor: Colors.grey[600],
+    unselectedItemColor: Colors.grey[500],
     selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
-    backgroundColor: Colors.grey[900],
+    backgroundColor: Colors.grey[50],
     items: <BottomNavigationBarItem>[
       BottomNavigationBarItem(
         label: "Bid",
         icon: Padding(
-          padding: const EdgeInsets.only(top: 2, bottom: 12),
-          child: Image.asset(
-            "assets/icons/auctionOutlined.png",
-            scale: 3.6,
-          ),
-        ),
-        activeIcon: Padding(
           padding: const EdgeInsets.only(top: 2, bottom: 12),
           child: Image.asset(
             "assets/icons/auction.png",
@@ -65,14 +60,17 @@ BottomNavigationBar _bottomNavigationBar(context, mainScreenProvider) {
         icon: Padding(
           padding: const EdgeInsets.only(top: 2, bottom: 12),
           child: Image.asset(
-            "assets/icons/storeOutlined.png",
+            "assets/icons/store.png",
             scale: 3.8,
           ),
         ),
-        activeIcon: Padding(
+      ),
+      BottomNavigationBarItem(
+        label: "Profile",
+        icon: Padding(
           padding: const EdgeInsets.only(top: 2, bottom: 12),
           child: Image.asset(
-            "assets/icons/store.png",
+            "assets/icons/person.png",
             scale: 3.8,
           ),
         ),

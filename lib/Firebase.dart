@@ -62,10 +62,10 @@ class DatabaseService {
       final newItem = {
         'sellerID': _user.uid,
         'title': title,
-        'startingPrice': startingPrice,
+        'startingPrice': int.parse(startingPrice),
         // current is starting at create
-        'currentPrice': startingPrice,
-        'minPerBid': minPerBid,
+        'currentPrice': int.parse(startingPrice),
+        'minPerBid': int.parse(minPerBid),
         'beginAt': dt.toIso8601String(),
         'endAt': endAt,
         'imgDataUrl': imgDataUrl,

@@ -37,7 +37,6 @@ flutter:
     assets:
         - assets/logo.png
         - assets/icons/auction.png
-        - assets/icons/auctionOutlined.png
         - assets/icons/store.png
-        - assets/icons/storeOutlined.png
+        - assets/icons/person.png
         - assets/icons/image.png
