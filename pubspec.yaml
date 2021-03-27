@@ -1,0 +1,40 @@
+name: biddee_flutter
+description: A new Flutter project.
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+    sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+    flutter:
+        sdk: flutter
+    # firebase
+    firebase_core: "0.7.0"
+    firebase_auth: "^0.20.1"
+    firebase_database: "^6.0.0"
+
+    get: ^3.26.0
+    provider: ^5.0.0
+
+    # helper widgets
+    image_picker: ^0.6.7+22
+
+    cupertino_icons: ^1.0.2
+
+dev_dependencies:
+    flutter_test:
+        sdk: flutter
+
+flutter:
+    uses-material-design: true
+
+    assets:
+        - assets/logo.png
+        - assets/icons/auction.png
+        - assets/icons/auctionOutlined.png
+        - assets/icons/store.png
+        - assets/icons/storeOutlined.png
+        - assets/icons/image.png
