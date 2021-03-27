@@ -3,6 +3,7 @@ import 'package:biddee_flutter/screens/LoginScreen.dart';
 import 'package:biddee_flutter/screens/MainScreen.dart';
 import 'package:biddee_flutter/screens/NewItemScreen.dart';
 import 'package:biddee_flutter/screens/RegisterScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -39,8 +40,11 @@ class MyApp extends StatelessWidget {
             shadowColor: Color(0xFFf5f8fc),
             primaryColorDark: Color(0xFF0e6396),
             errorColor: Color(0xFFff6b6b),
+            fontFamily: 'Avenir',
           ),
-          home: NewItemScreen(),
+          home: FirebaseAuth.instance.currentUser != null
+              ? MainScreen()
+              : LoginScreen(),
           debugShowCheckedModeBanner: false,
           routes: {
             '/main': (context) => MainScreen(),

@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:image/image.dart' as Img;
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
 
 class EndDatePicker with ChangeNotifier {
   final _now = DateTime.now();
@@ -27,6 +27,8 @@ class EndDatePicker with ChangeNotifier {
 
     return dd + "/" + mm + "/" + yy + " at " + time;
   }
+
+  get dateISO => _endPicked != null ? _endPicked.toIso8601String() : null;
 }
 
 class MinPerBidPicker with ChangeNotifier {

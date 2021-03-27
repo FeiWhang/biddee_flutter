@@ -71,27 +71,26 @@ class DatabaseService {
         'imgDataUrl': imgDataUrl,
         'description': description,
       };
+
       // get item id
       final itemID = _firebaseDB.reference().child('items').push().key;
+
       // add to items/
       await _firebaseDB.reference().child('items').child(itemID).set(newItem);
-      // add itemID to myitems in users/
 
+      // add itemID to myitems in users/
       final _usersRef = _firebaseDB.reference().child('users').child(_user.uid);
-      await _usersRef.child('myItems').once().then((snapshot) => {
-            if (snapshot.value != null)
-              {
-                _usersRef.child('myItems').set(snapshot.value + [itemID])
-              }
-            else
-              {
-                _usersRef.child('myItems').set([itemID])
-              }
-          });
+      await _usersRef.child('myItems').once().then((snapshot) {
+        if (snapshot.value != null) {
+          _usersRef.child('myItems').set(snapshot.value + [itemID]);
+        } else {
+          _usersRef.child('myItems').set([itemID]);
+        }
+      });
 
       return "addedMyItem";
-    } on FirebaseException catch (e) {
-      print("e.message");
+    } catch (e) {
+      print(e);
       return e.message;
     }
   }

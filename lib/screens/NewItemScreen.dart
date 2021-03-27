@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:biddee_flutter/Firebase.dart';
 import 'package:biddee_flutter/providers/NewItemProvider.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -61,12 +62,71 @@ class NewItemBody extends StatelessWidget {
               .toString();
       final String imgDataUrl =
           Provider.of<SetImageProvider>(context, listen: false).final64;
+      final String endAt =
+          Provider.of<EndDatePicker>(context, listen: false).dateISO;
 
-      print(title);
-      print(description);
-      print(startingPrice);
-      print(minPerBid);
-      print(imgDataUrl);
+      if (title != null &&
+          description != null &&
+          startingPrice != null &&
+          imgDataUrl != null &&
+          endAt != null &&
+          title != "" &&
+          description != "" &&
+          startingPrice != "") {
+        showDialog(
+          context: context,
+          builder: (_) => CupertinoAlertDialog(
+            title: Text(
+              "Comfirmation",
+            ),
+            content: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text("I have reviewed that the information is correct"),
+            ),
+            actions: [
+              CupertinoDialogAction(
+                child: Text("Cancel",
+                    style: TextStyle(color: Theme.of(context).errorColor)),
+                onPressed: () => Get.back(),
+              ),
+              CupertinoDialogAction(
+                child: Text("Confirm"),
+                onPressed: () {
+                  // do firebase process
+                  DatabaseService().addMyItem(
+                      title: title,
+                      description: description,
+                      startingPrice: startingPrice,
+                      minPerBid: minPerBid,
+                      imgDataUrl: imgDataUrl,
+                      endAt: endAt);
+                  // close dialog
+                  Get.back();
+                },
+              ),
+            ],
+          ),
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (_) => CupertinoAlertDialog(
+            title: Text(
+              "Cannot create item",
+            ),
+            content: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text("No field can be left blank"),
+            ),
+            actions: [
+              CupertinoDialogAction(
+                child: Text("OK"),
+                onPressed: () => Get.back(),
+              ),
+            ],
+          ),
+        );
+      }
     }
 
     return SingleChildScrollView(
@@ -86,8 +146,8 @@ class NewItemBody extends StatelessWidget {
               onPressed: () => createNewItem(),
               child: Text("CREATE ITEM"),
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xFFf3f3f3)),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Theme.of(context).primaryColorDark),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
@@ -134,11 +194,13 @@ class ImageSelector extends StatelessWidget {
           // crop image
           await _cropImage();
 
-          // resize image
-          Img.Image img =
-              Img.decodeImage(setImageProvider.croppedFile.readAsBytesSync());
-          Img.Image resizedImg = Img.copyResize(img, width: 300, height: 300);
-          setImageProvider.resizedImage = resizedImg;
+          if (setImageProvider.croppedFile != null) {
+            // resize image
+            Img.Image img =
+                Img.decodeImage(setImageProvider.croppedFile.readAsBytesSync());
+            Img.Image resizedImg = Img.copyResize(img, width: 300, height: 300);
+            setImageProvider.resizedImage = resizedImg;
+          }
 
           // convert resized to base64
           if (setImageProvider.isResized) {
@@ -149,6 +211,7 @@ class ImageSelector extends StatelessWidget {
         }
       } else {
         print("permission is not granted: request again");
+        await Permission.photos.status;
       }
     }
 
