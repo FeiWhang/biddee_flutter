@@ -19,74 +19,76 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 32),
-            child: Text(
-              "Register",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  decoration: TextDecoration.none),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 32),
+              child: Text(
+                "Register",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                    decoration: TextDecoration.none),
+              ),
             ),
-          ),
-          ResgisterForm(
-            emailController: emailController,
-            passwordController: passwordController,
-            fistNameController: fistNameController,
-            lastNameController: lastNameController,
-            confirmPasswordController: confirmPasswordController,
-          ),
-          Container(
-            margin: new EdgeInsets.only(top: 32, bottom: 48),
-            child: RegisterButton(
+            ResgisterForm(
               emailController: emailController,
               passwordController: passwordController,
               fistNameController: fistNameController,
               lastNameController: lastNameController,
               confirmPasswordController: confirmPasswordController,
             ),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: new EdgeInsets.only(right: 8),
-                  child: Text(
-                    "Already have an account?",
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  child: Text("Log in",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).primaryColorDark,
-                          fontWeight: FontWeight.w400)),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.fromLTRB(16, 8, 16, 8)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(
-                              color: Theme.of(context).primaryColorDark)),
-                    ),
-                  ),
-                  onPressed: () => {Get.back()},
-                )
-              ],
+            Container(
+              margin: new EdgeInsets.only(top: 32, bottom: 48),
+              child: RegisterButton(
+                emailController: emailController,
+                passwordController: passwordController,
+                fistNameController: fistNameController,
+                lastNameController: lastNameController,
+                confirmPasswordController: confirmPasswordController,
+              ),
             ),
-          )
-        ],
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: new EdgeInsets.only(right: 8),
+                    child: Text(
+                      "Already have an account?",
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                  TextButton(
+                    child: Text("Log in",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).primaryColorDark,
+                            fontWeight: FontWeight.w400)),
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          EdgeInsets.fromLTRB(16, 8, 16, 8)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColorDark)),
+                      ),
+                    ),
+                    onPressed: () => {Get.back()},
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -23,23 +23,32 @@ class MyApp extends StatelessWidget {
           create: (_) => MainScreenProvider(),
         ),
       ],
-      child: GetMaterialApp(
-        title: 'Biddee',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          primaryColor: Color(0xFF1080c5),
-          shadowColor: Color(0xFFf5f8fc),
-          primaryColorDark: Color(0xFF0e6396),
-          errorColor: Color(0xFFff6b6b),
-        ),
-        home: NewItemScreen(),
-        debugShowCheckedModeBanner: false,
-        routes: {
-          '/main': (context) => MainScreen(),
-          '/login': (context) => LoginScreen(),
-          '/register': (context) => RegisterScreen(),
-          '/newitem': (context) => NewItemScreen(),
+      child: Listener(
+        onPointerDown: (_) {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus &&
+              currentFocus.focusedChild != null) {
+            currentFocus.focusedChild.unfocus();
+          }
         },
+        child: GetMaterialApp(
+          title: 'Biddee',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+            primaryColor: Color(0xFF1080c5),
+            shadowColor: Color(0xFFf5f8fc),
+            primaryColorDark: Color(0xFF0e6396),
+            errorColor: Color(0xFFff6b6b),
+          ),
+          home: NewItemScreen(),
+          debugShowCheckedModeBanner: false,
+          routes: {
+            '/main': (context) => MainScreen(),
+            '/login': (context) => LoginScreen(),
+            '/register': (context) => RegisterScreen(),
+            '/newitem': (context) => NewItemScreen(),
+          },
+        ),
       ),
     );
   }

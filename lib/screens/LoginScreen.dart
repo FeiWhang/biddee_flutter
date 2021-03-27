@@ -10,75 +10,77 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: Image.asset(
-              'assets/logo.png',
-              width: 150,
-              height: 150,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: Image.asset(
+                'assets/logo.png',
+                width: 150,
+                height: 150,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 78, 0, 32),
-            child: Text(
-              "Login to Biddee",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 24,
-                  decoration: TextDecoration.none),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 78, 0, 32),
+              child: Text(
+                "Login to Biddee",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                    decoration: TextDecoration.none),
+              ),
             ),
-          ),
-          LoginForm(
-              emailController: emailController,
-              passwordController: passwordController),
-          Container(
-            margin: new EdgeInsets.only(top: 32, bottom: 54),
-            child: LoginButton(
-              emailController: emailController,
-              passwordController: passwordController,
+            LoginForm(
+                emailController: emailController,
+                passwordController: passwordController),
+            Container(
+              margin: new EdgeInsets.only(top: 32, bottom: 54),
+              child: LoginButton(
+                emailController: emailController,
+                passwordController: passwordController,
+              ),
             ),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: new EdgeInsets.only(right: 8),
-                  child: Text(
-                    "Not a member?",
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-                TextButton(
-                  child: Text("Sign up",
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: new EdgeInsets.only(right: 8),
+                    child: Text(
+                      "Not a member?",
                       style: TextStyle(
-                          fontSize: 16,
-                          color: Theme.of(context).primaryColorDark,
-                          fontWeight: FontWeight.w400)),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.fromLTRB(16, 8, 16, 8)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(
-                              color: Theme.of(context).primaryColorDark)),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-                  onPressed: () => {Get.toNamed('/register')},
-                ),
-              ],
-            ),
-          )
-        ],
+                  TextButton(
+                    child: Text("Sign up",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).primaryColorDark,
+                            fontWeight: FontWeight.w400)),
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          EdgeInsets.fromLTRB(16, 8, 16, 8)),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(
+                                color: Theme.of(context).primaryColorDark)),
+                      ),
+                    ),
+                    onPressed: () => {Get.toNamed('/register')},
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
