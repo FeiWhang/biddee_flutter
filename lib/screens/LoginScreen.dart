@@ -237,7 +237,7 @@ class LoginButton extends StatelessWidget {
         res.then(
           (value) {
             if (value == "logedin") {
-              Get.toNamed('/main');
+              Get.offAllNamed('/main');
             } else {
               Get.dialog(CupertinoAlertDialog(
                 title: Text('Failed to log in'),

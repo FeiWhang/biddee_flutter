@@ -401,7 +401,7 @@ class RegisterButton extends StatelessWidget {
               );
               resDB.then((dbValue) => {
                     if (dbValue == "addedNewUser")
-                      {Get.toNamed('/main')}
+                      {Get.offAllNamed('/main')}
                     else
                       {
                         Get.dialog(CupertinoAlertDialog(

@@ -18,6 +18,7 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: SizedBox(),
         title: Text(
           "Biddee",
           style: TextStyle(fontSize: 24),

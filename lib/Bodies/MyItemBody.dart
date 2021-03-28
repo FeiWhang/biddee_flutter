@@ -12,54 +12,52 @@ class MyItemBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "My item",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "My item",
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+              ),
+              TextButton(
+                child: Row(
+                  children: [
+                    Text(
+                      "Create new item".toUpperCase(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.white,
+                      size: 18,
+                    )
+                  ],
                 ),
-                TextButton(
-                  child: Row(
-                    children: [
-                      Text(
-                        "Create new item".toUpperCase(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        color: Colors.white,
-                        size: 18,
-                      )
-                    ],
-                  ),
-                  onPressed: () {
-                    Get.toNamed('/newitem');
-                  },
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(vertical: 8, horizontal: 12)),
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Theme.of(context).primaryColor),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
+                onPressed: () {
+                  Get.toNamed('/newitem');
+                },
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 8, horizontal: 12)),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Theme.of(context).primaryColor),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
                     ),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            MyItemCard()
-          ],
-        ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          MyItemCard()
+        ],
       ),
     );
   }
