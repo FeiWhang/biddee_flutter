@@ -94,4 +94,54 @@ class DatabaseService {
       return e.message;
     }
   }
+
+  Future<List<Map>> fetchMyItems() async {
+    try {
+      // get itemIDs from users/
+      var itemIDsSnapshot = await _firebaseDB
+          .reference()
+          .child('users')
+          .child(_user.uid)
+          .child('myItems')
+          .once();
+      var itemIDs = itemIDsSnapshot.value;
+
+      // if no item return empty list
+      if (itemIDs == null) {
+        return [];
+      }
+
+      List<Map> myItems = [];
+
+      // then for each item get
+      for (var itemID in itemIDs) {
+        var itemSnapshot =
+            await _firebaseDB.reference().child('items').child(itemID).once();
+        Map itemData = itemSnapshot.value;
+        String endDate = itemData['endAt'];
+        String dd = endDate.substring(8, 10);
+        String mm = endDate.substring(5, 7);
+        String yy = endDate.substring(0, 4);
+        String hrs = endDate.substring(11, 13);
+        String min = endDate.substring(14, 16);
+        String endAt = dd + "/" + mm + "/" + yy + " at " + hrs + ":" + min;
+
+        DateTime endDT = DateTime.parse(itemData['endAt']);
+        DateTime now = DateTime.now();
+
+        Map myItem = {
+          'title': itemData['title'],
+          'currentPrice': itemData['currentPrice'],
+          'endAt': endAt,
+          'status': endDT.isAfter(now),
+          'imgDataUrl': itemData['imgDataUrl'].split(',')[1],
+        };
+        myItems.add(myItem);
+      }
+      return myItems;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
 }

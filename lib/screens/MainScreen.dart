@@ -40,8 +40,8 @@ BottomNavigationBar _bottomNavigationBar(context, mainScreenProvider) {
     },
     selectedFontSize: 14,
     unselectedFontSize: 14,
-    selectedItemColor: Colors.grey[600],
-    unselectedItemColor: Colors.grey[500],
+    selectedItemColor: Theme.of(context).primaryColorDark,
+    unselectedItemColor: Theme.of(context).primaryColor,
     selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
     backgroundColor: Colors.grey[50],
     items: <BottomNavigationBarItem>[
