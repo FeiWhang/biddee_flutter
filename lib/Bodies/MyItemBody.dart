@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:biddee_flutter/Firebase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -53,6 +54,9 @@ class MyItemBody extends StatelessWidget {
                 ),
               ],
             ),
+            SizedBox(
+              height: 24,
+            ),
             MyItemCard()
           ],
         ),
@@ -67,18 +71,105 @@ class MyItemCard extends StatefulWidget {
 }
 
 class _MyItemCardState extends State<MyItemCard> {
+  final FirebaseDatabase _firebaseDB = FirebaseDatabase.instance;
+  final User _user = FirebaseAuth.instance.currentUser;
+
   List _myItems = [];
 
   @override
   void initState() {
     super.initState();
 
-    DatabaseService().fetchMyItems().then((value) => {
-          if (mounted)
-            setState(() {
-              _myItems = value;
-            })
-        });
+    _firebaseDB
+        .reference()
+        .child('users')
+        .child(_user.uid)
+        .child('myItems')
+        .onValue
+        .listen((event) {
+      List myItemIDs = event.snapshot.value;
+      // item update
+      if (_myItems.length >= myItemIDs.length) {
+        for (var myItemID in myItemIDs) {
+          _firebaseDB
+              .reference()
+              .child('items')
+              .child(myItemID)
+              .onValue
+              .listen((event) {
+            if (mounted) {
+              Map itemData = event.snapshot.value;
+              String endDate = itemData['endAt'];
+              String dd = endDate.substring(8, 10);
+              String mm = endDate.substring(5, 7);
+              String yy = endDate.substring(0, 4);
+              String hrs = endDate.substring(11, 13);
+              String min = endDate.substring(14, 16);
+              String endAt =
+                  dd + "/" + mm + "/" + yy + " at " + hrs + ":" + min;
+
+              DateTime endDT = DateTime.parse(itemData['endAt']);
+              DateTime now = DateTime.now();
+
+              Map myItem = {
+                'id': myItemID,
+                'title': itemData['title'],
+                'currentPrice': itemData['currentPrice'],
+                'endAt': endAt,
+                'status': endDT.isAfter(now),
+                'imgDataUrl': itemData['imgDataUrl'].split(',')[1],
+              };
+              setState(() {
+                for (var item in _myItems) {
+                  if (item['id'] == myItemID) {
+                    item['title'] = myItem['title'];
+                    item['description'] = myItem['description'];
+                    item['currentPrice'] = myItem['currentPrice'];
+                  }
+                }
+              });
+            }
+          });
+        }
+      } else {
+        myItemIDs = myItemIDs.sublist(_myItems.length);
+        for (var myItemID in myItemIDs) {
+          _firebaseDB
+              .reference()
+              .child('items')
+              .child(myItemID)
+              .onValue
+              .listen((event) {
+            if (mounted) {
+              Map itemData = event.snapshot.value;
+              String endDate = itemData['endAt'];
+              String dd = endDate.substring(8, 10);
+              String mm = endDate.substring(5, 7);
+              String yy = endDate.substring(0, 4);
+              String hrs = endDate.substring(11, 13);
+              String min = endDate.substring(14, 16);
+              String endAt =
+                  dd + "/" + mm + "/" + yy + " at " + hrs + ":" + min;
+
+              DateTime endDT = DateTime.parse(itemData['endAt']);
+              DateTime now = DateTime.now();
+
+              Map myItem = {
+                'id': myItemID,
+                'title': itemData['title'],
+                'currentPrice': itemData['currentPrice'],
+                'endAt': endAt,
+                'status': endDT.isAfter(now),
+                'imgDataUrl': itemData['imgDataUrl'].split(',')[1],
+              };
+              setState(() {
+                _myItems.add(myItem);
+              });
+            }
+          });
+        }
+      }
+    });
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:biddee_flutter/providers/MainScreenProvider.dart';
+import 'package:biddee_flutter/providers/NewItemProvider.dart';
 import 'package:biddee_flutter/screens/LoginScreen.dart';
 import 'package:biddee_flutter/screens/MainScreen.dart';
 import 'package:biddee_flutter/screens/NewItemScreen.dart';

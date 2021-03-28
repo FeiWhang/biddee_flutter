@@ -101,7 +101,7 @@ class NewItemBody extends StatelessWidget {
                       imgDataUrl: imgDataUrl,
                       endAt: endAt);
                   // close dialog
-                  Get.back();
+                  Get.offAllNamed('/main');
                 },
               ),
             ],
@@ -376,7 +376,8 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(
                     height: 250,
                     child: CupertinoDatePicker(
-                      initialDateTime: endDateProvider.minDate,
+                      initialDateTime: endDateProvider.minDate
+                          .add(const Duration(minutes: 1)),
                       minimumDate: endDateProvider.minDate,
                       maximumDate: endDateProvider.maxDate,
                       onDateTimeChanged: (dt) {
