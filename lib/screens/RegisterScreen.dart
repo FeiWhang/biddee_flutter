@@ -376,7 +376,18 @@ class RegisterButton extends StatelessWidget {
       ),
       onPressed: () {
         if (passwordController.text != confirmPasswordController.text) {
-          print("Confirm password does not match password");
+          Get.dialog(CupertinoAlertDialog(
+            title: Text('Failed to register'),
+            content: Text("Confirm password does not match password"),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Get.back();
+                },
+              ),
+            ],
+          ));
         } else {
           final resAuth = AuthenticationService().register(
               email: emailController.text.trim(),
@@ -392,10 +403,34 @@ class RegisterButton extends StatelessWidget {
                     if (dbValue == "addedNewUser")
                       {Get.toNamed('/main')}
                     else
-                      {print(dbValue)}
+                      {
+                        Get.dialog(CupertinoAlertDialog(
+                          title: Text('Failed to register'),
+                          content: Text(dbValue),
+                          actions: [
+                            TextButton(
+                              child: Text('OK'),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            ),
+                          ],
+                        ))
+                      }
                   });
             } else {
-              print(authValue);
+              Get.dialog(CupertinoAlertDialog(
+                title: Text('Failed to register'),
+                content: Text(authValue),
+                actions: [
+                  TextButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Get.back();
+                    },
+                  ),
+                ],
+              ));
             }
           });
         }

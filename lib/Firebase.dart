@@ -4,8 +4,13 @@ import 'package:firebase_database/firebase_database.dart';
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<void> logOut() async {
-    await _firebaseAuth.signOut();
+  Future<String> logOut() async {
+    try {
+      await _firebaseAuth.signOut();
+      return "loggedout";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
   }
 
   Future<String> logIn({String email, String password}) async {

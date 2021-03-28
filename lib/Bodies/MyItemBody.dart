@@ -156,6 +156,7 @@ class _MyItemCardState extends State<MyItemCard> {
 
               Map myItem = {
                 'id': myItemID,
+                'endDT': endDT,
                 'title': itemData['title'],
                 'currentPrice': itemData['currentPrice'],
                 'endAt': endAt,
@@ -175,6 +176,12 @@ class _MyItemCardState extends State<MyItemCard> {
   @override
   Widget build(BuildContext context) {
     var _listTiles = <Widget>[];
+
+    if (mounted && _myItems.length > 1) {
+      setState(() {
+        _myItems.sort((a, b) => a['endDT'].compareTo(b['endDT']));
+      });
+    }
 
     for (var myItem in _myItems) {
       Uint8List imgBytes = base64Decode(myItem['imgDataUrl']);
