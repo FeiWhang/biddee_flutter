@@ -379,8 +379,7 @@ class _NewItemFormState extends State<NewItemForm> {
                   SizedBox(
                     height: 250,
                     child: CupertinoDatePicker(
-                      initialDateTime: endDateProvider.minDate
-                          .add(const Duration(minutes: 1)),
+                      initialDateTime: endDateProvider.minDate,
                       minimumDate: endDateProvider.minDate,
                       maximumDate: endDateProvider.maxDate,
                       onDateTimeChanged: (dt) {

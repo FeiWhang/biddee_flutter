@@ -51,26 +51,27 @@ class _PlaceBidBodyState extends State<PlaceBidBody> {
 
     itemID = widget.placeBidIDProvider.itemID;
 
-    if (mounted) {
+    _firebaseDB
+        .reference()
+        .child('items')
+        .child(itemID)
+        .onValue
+        .listen((event) {
+      final item = event.snapshot.value;
+
       _firebaseDB
           .reference()
-          .child('items')
-          .child(itemID)
-          .onValue
-          .listen((event) {
-        final item = event.snapshot.value;
-
-        _firebaseDB
-            .reference()
-            .child('users')
-            .child(item['sellerID'])
-            .child('firstName')
-            .once()
-            .then((snapshot) {
+          .child('users')
+          .child(item['sellerID'])
+          .child('firstName')
+          .once()
+          .then((snapshot) {
+        if (mounted)
           setState(() {
             seller = snapshot.value;
           });
-        });
+      });
+      if (mounted)
         setState(() {
           itemData = {
             'title': item['title'],
@@ -81,8 +82,7 @@ class _PlaceBidBodyState extends State<PlaceBidBody> {
             'endDT': DateTime.parse(item['endAt']),
           };
         });
-      });
-    }
+    });
   }
 
   @override

@@ -48,36 +48,35 @@ class _BidCardState extends State<BidCard> {
   @override
   void initState() {
     super.initState();
-    if (mounted) {
-      _firebaseDB.reference().child('items').onValue.listen((event) {
-        var items = event.snapshot.value;
-        var bidItems = [];
+    _firebaseDB.reference().child('items').onValue.listen((event) {
+      var items = event.snapshot.value;
+      var bidItems = [];
 
-        items.forEach((id, item) {
-          final now = DateTime.now();
-          final endDT = DateTime.parse(item['endAt']);
+      items.forEach((id, item) {
+        final now = DateTime.now();
+        final endDT = DateTime.parse(item['endAt']);
 
-          if (endDT.compareTo(now) >= 0 && item['sellerID'] != _user.uid) {
-            var bidItem = {
-              'id': id,
-              'title': item['title'],
-              'description': item['description'],
-              'currentPrice': item['currentPrice'],
-              'imgDataUrl': item['imgDataUrl'].split(',')[1],
-              'minPerBid': item['minPerBid'],
-              'endDT': endDT,
-            };
+        if (endDT.compareTo(now) >= 0 && item['sellerID'] != _user.uid) {
+          var bidItem = {
+            'id': id,
+            'title': item['title'],
+            'description': item['description'],
+            'currentPrice': item['currentPrice'],
+            'imgDataUrl': item['imgDataUrl'].split(',')[1],
+            'minPerBid': item['minPerBid'],
+            'endDT': endDT,
+          };
 
-            bidItems.add(bidItem);
-          }
-        });
+          bidItems.add(bidItem);
+        }
+      });
 
-        bidItems.sort((a, b) => a['endDT'].compareTo(b['endDT']));
+      bidItems.sort((a, b) => a['endDT'].compareTo(b['endDT']));
+      if (mounted)
         setState(() {
           _bidItems = bidItems;
         });
-      });
-    }
+    });
   }
 
   @override
