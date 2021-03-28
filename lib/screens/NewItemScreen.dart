@@ -30,9 +30,7 @@ class NewItemScreen extends StatelessWidget {
       ],
       child: Scaffold(
         appBar: AppBar(
-          leading: BackButton(
-            onPressed: () => Get.back(),
-          ),
+          leading: BackButton(onPressed: () => Get.back()),
           title: Text(
             "Create new item",
           ),
@@ -222,11 +220,16 @@ class ImageSelector extends StatelessWidget {
         children: [
           setImageProvider.isResized
               ? Container(
-                  margin: const EdgeInsets.only(bottom: 8, top: 16),
-                  child: Image.memory(
-                    Img.encodePng(setImageProvider.resizedImage),
-                    width: imageSize,
-                    height: imageSize,
+                  width: imageSize,
+                  height: imageSize,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: MemoryImage(
+                        Img.encodePng(setImageProvider.resizedImage),
+                      ),
+                    ),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
                   ),
                 )
               : Container(
@@ -239,7 +242,7 @@ class ImageSelector extends StatelessWidget {
                         blurRadius: 2,
                       ),
                     ],
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
                   ),
                   width: imageSize,
                   height: imageSize,

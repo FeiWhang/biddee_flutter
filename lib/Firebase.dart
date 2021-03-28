@@ -99,4 +99,49 @@ class DatabaseService {
       return e.message;
     }
   }
+
+  Future<String> placeBid(String itemID, int bidPrice) async {
+    try {
+      // get the bid id
+      final bidID = _firebaseDB.reference().child('bids').push().key;
+
+      final bidData = {
+        'bidder': _user.uid,
+        'itemID': itemID,
+        'placeAt': DateTime.now().toIso8601String(),
+        'bidPrice': bidPrice,
+      };
+
+      // add to bids/
+      await _firebaseDB.reference().child('bids').child(bidID).set(bidData);
+
+      // add to users/
+      final _usersRef = _firebaseDB.reference().child('users').child(_user.uid);
+      await _usersRef.child('myBids').once().then((snapshot) {
+        if (snapshot.value != null) {
+          _usersRef.child('myBids').set(snapshot.value + [bidID]);
+        } else {
+          _usersRef.child('myBids').set([bidID]);
+        }
+      });
+
+      // add to items/
+      final _itemsRef = _firebaseDB.reference().child('items').child(itemID);
+      await _itemsRef.child('bidHistory').once().then((snapshot) {
+        if (snapshot.value != null) {
+          _itemsRef.child('bidHistory').set(snapshot.value + [bidID]);
+        } else {
+          _itemsRef.child('bidHistory').set([bidID]);
+        }
+      });
+
+      // adjust current price on items/
+      await _itemsRef.child('currentPrice').set(bidPrice);
+
+      return 'placedbid';
+    } catch (e) {
+      print(e);
+      return e.message;
+    }
+  }
 }

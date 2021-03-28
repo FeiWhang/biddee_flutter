@@ -1,7 +1,9 @@
 import 'package:biddee_flutter/providers/MainScreenProvider.dart';
+import 'package:biddee_flutter/providers/PlaceBidProvider.dart';
 import 'package:biddee_flutter/screens/LoginScreen.dart';
 import 'package:biddee_flutter/screens/MainScreen.dart';
 import 'package:biddee_flutter/screens/NewItemScreen.dart';
+import 'package:biddee_flutter/screens/PlaceBidScreen.dart';
 import 'package:biddee_flutter/screens/RegisterScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,6 +25,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => MainScreenProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => PlaceBidIDProvider(),
+        )
       ],
       child: Listener(
         onPointerDown: (_) {
@@ -42,15 +47,15 @@ class MyApp extends StatelessWidget {
             errorColor: Color(0xFFff6b6b),
             fontFamily: 'Avenir',
           ),
-          home: FirebaseAuth.instance.currentUser != null
-              ? MainScreen()
-              : LoginScreen(),
           debugShowCheckedModeBanner: false,
+          initialRoute:
+              FirebaseAuth.instance.currentUser != null ? '/main' : '/login',
           routes: {
             '/main': (context) => MainScreen(),
             '/login': (context) => LoginScreen(),
             '/register': (context) => RegisterScreen(),
             '/newitem': (context) => NewItemScreen(),
+            '/placebid': (context) => PlaceBidScreen(),
           },
         ),
       ),
